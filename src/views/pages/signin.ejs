@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/headLinks'); %>
+    <title>Document</title>
+    <style>
+       
+        .signin .main-card{
+            -webkit-box-shadow: 0px 0px 10px 0px rgba(112,112,112,1);
+            -moz-box-shadow: 0px 0px 10px 0px rgba(112,112,112,1);
+            box-shadow: 0px 0px 10px 0px rgba(112,112,112,1);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 350px;
+            transform: translate(-50%,-50%);
+        }
+
+        .signin-card h5{
+            font-weight: 700;
+        }
+
+        .signin-card input{
+            border: none;
+            border-bottom: 1px solid gainsboro;
+        }
+        
+        .signin-card input:focus{
+            outline: none;
+        }
+
+        .signin h5{
+            font-weight: 700;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .signin p{
+            font-size: 14px;
+            font-weight: 400;
+            color: white;
+        }
+
+        .signin .left-card{
+            background-color: #599AFF;
+        }
+
+        .padding-0{
+            padding-right:0;
+            padding-left:0;
+        }
+
+        .signin .left-card{
+            width: 50%;
+        }
+
+        .signin .right-card{
+            width: 50%;
+        }
+
+        .signin .btn-login{
+            background-color: #599AFF;
+            border: none;
+            outline: none;
+            color: white;
+            font-weight: 600; 
+        }
+
+        .signin h5.heading{
+            color: #599AFF;
+            font-weight: 800;
+        }   
+
+        @media only screen and (max-width: 576px){
+            .signin .left-card{
+                width: 100%;
+            }
+
+        .signin .right-card{
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="signin">
+        <form action="../admin/signin" method="POST">
+            <div class="container">
+                <div class="main-card text-center d-flex flex-sm-row flex-column">
+                    <div class="left-card p-4 padding-0 py-5">
+                        <h5>Get exclusive excess to brickshare</h5>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. 
+                            Reprehenderit nulla itaque consequatur placeat corporis
+                            magnam consequuntur, autem facere exercitationem rerum 
+                        </p>
+                    </div>
+                    <div class="right-card p-4 padding-0 py-5">
+                        <h5 class="heading mb-3">SIGN IN</h5>
+                        <input class="w-100 p-2 mb-2" type="text" name="username" placeholder="username">
+                        <input class="w-100 p-2 mb-2" type="password" placeholder="password" name="password">
+                        <button class="btn-login mt-3 py-2 px-4" type="submit">LOGIN</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+
+
+
+    <%- include('../partials/scriptLinks'); %>
+</body>
+</html>

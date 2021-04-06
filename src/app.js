@@ -6,8 +6,10 @@ const csv = require('csv-parser');
 const ejs = require('ejs');
 const db = require('./db/config');
 const upload = require('express-fileupload');
-const Data = require('./models/data');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const Data = require('./models/data');
+const Admin = require('./models/Admin');
 const port = process.env.PORT || 3000;
 
 
@@ -111,7 +113,6 @@ app.post('/admin/upload', (req,res)=>{
 
 
 app.post('/admin/uploadmanual', async(req,res)=>{
-    console.log(req.body)
     let Name= req.body.name;
     let Age= req.body.age;
     let Phone= req.body.phone
@@ -165,6 +166,30 @@ app.get('/admin/deletedata', async(req,res)=>{
             type:"Error"
         })
     }           
+});
+
+app.get('/admin/signin', (req,res)=>{
+    res.render('pages/signin')
+})
+
+app.post('/admin/signin', (req,res)=>{
+    let username= req.body.username;
+    let password= req.body.password;
+
+    if(username=='' || password==''){
+        res.render("pages/signin",{
+            message: 'Input Field Should Not Be Empty',
+            type:'Error'
+        })
+    }
+    else{
+        let pass =  bcrypt.hash(password, "123456789csvuploadweb");
+        const adminData = new Admin({
+            username:username,
+            password:pass
+        })
+        adminData.save()
+    }
 })
 
 
