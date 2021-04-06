@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/headLinks'); %>
+    <title>Document</title>
+    <style>
+        .searchbar input:focus{
+            outline: none;
+        }
+
+        .searchbar input{
+            padding: 5px 10px;
+        }
+
+        .upload-csv .upload-card{
+            -webkit-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+            box-shadow: 0px 0px 12px 0px rgba(0,0,0,0.75);
+        }
+
+        .upload-csv .upload-card h5{
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+    <%- include('../partials/adminNavbar'); %>
+
+    <% if (message != '') { %>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <% if (type === 'Success') { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong><%= message %></strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <%} else { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong><%= message %></strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <section class="searchbar py-5">
+        <form action="admin/search" method="POST">
+            <div class="container">
+                <div class="row">
+                    <div class="col-9 col-md-10">
+                        <input class="w-100" placeholder="Enter ID to seach...." type="text">
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <button class="w-100 btn btn-success">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-data">
+        <form action="../admin/deletedata" method="GET">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table text-center table-responsive-md border">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">_id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i < result.length; i++) { %>
+                                    <tr>
+                                        <th scope="row"><%= i+1 %></th>
+                                        <td><%= result[i]._id %></td>
+                                        <td><%= result[i].Name %></td>
+                                        <td><%= result[i].Age %></td>
+                                        <td><%= result[i].Phone %></td>
+                                        <td><button class="w-100 text-light btn btn-warning" onclick="window.location.href='/admin/editdata?id=<%= result[i]._id %>' ">Edit</button></td>
+                                        <td><button class="w-100 btn btn-danger" onclick="window.location.href='/admin/deletedata?id=<%= result[i]._id %>' ">Delete</button></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <%- include('../partials/scriptLinks'); %>
+</body>
+</html>
