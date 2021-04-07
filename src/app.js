@@ -50,7 +50,7 @@ app.get('/', (req,res)=>{
 app.get('/admin/', async(req,res)=>{
     let result = await fetchData();
     res.render("pages/admin",{
-        message:"",
+        message:'',
         result
     })
 })
@@ -150,7 +150,6 @@ app.post('/admin/uploadmanual', async(req,res)=>{
 app.get('/admin/deletedata', async(req,res)=>{
     let _id = req.query.id;
     let ans = await DeleteData(_id);
-    console.log(ans)
     let result = await fetchData()
     if(ans==true){
         res.render('pages/admin',{
@@ -168,27 +167,120 @@ app.get('/admin/deletedata', async(req,res)=>{
     }           
 });
 
-app.get('/admin/signin', (req,res)=>{
-    res.render('pages/signin')
+app.get('/admin/signup', (req,res)=>{
+    res.render('pages/signup',{
+        message: ''
+    })
 })
 
-app.post('/admin/signin', (req,res)=>{
+app.post('/admin/signup', async (req,res)=>{
     let username= req.body.username;
     let password= req.body.password;
 
     if(username=='' || password==''){
-        res.render("pages/signin",{
+        res.render("pages/signup",{
             message: 'Input Field Should Not Be Empty',
             type:'Error'
         })
     }
     else{
-        let pass =  bcrypt.hash(password, "123456789csvuploadweb");
-        const adminData = new Admin({
+        let pass =  await bcrypt.hash(password, 10);
+        const adminData = await new Admin({
             username:username,
             password:pass
         })
         adminData.save()
+        res.redirect("/admin/signin")
+    }
+});
+
+app.get('/admin/signin', (req,res)=>{
+    res.render('pages/signin',{
+        message: ''
+    })
+})
+
+app.post('/admin/signin', async (req,res)=>{
+    let username= req.body.username;
+    let password= req.body.password;
+
+    if(username=='' || password==''){
+        res.render("pages/signin",{
+            message: 'Invalid Username or Password',
+            type:'Error'
+        })
+    }
+    else{
+        let admin = await Admin.findOne({username:username});
+        let isMatch = await bcrypt.compare(password, admin.password);
+        if(isMatch){
+            res.redirect("/admin/")
+        }
+        else{
+            res.render("pages/signin",{
+                message: 'Invalid Username or Password',
+                type:'Error'
+            })
+        }
+    }
+});
+
+app.get('/admin/search', async(req,res)=>{
+    try{
+        let result = await fetchData();
+        res.render('pages/search',{
+            result,
+            message:'',
+        })
+    }
+    catch(e){
+        res.render('pages/search',{
+            result,
+            message:'Failed to Load Page',
+        })
+    }
+}) 
+
+app.post('/admin/search', async(req,res)=>{
+    let searchQuery = req.body.search
+    let _id = searchQuery.trim();
+
+    if(searchQuery==''){
+        let result = await fetchData();
+        res.render('pages/search',{
+            type:'Error',
+            result,
+            message:'Please Enter _id to Search'
+        })
+    }
+    else{
+        try{
+            let result = await Data.findOne({_id});
+            if(!result){
+                let result = await fetchData();
+                res.render('pages/search',{
+                    type:'Error',
+                    result,
+                    message:'Invalid _id No Data Found'
+                })
+            }
+            else{
+                let result = await fetchData();
+                res.render('pages/search',{
+                    type:'Success',
+                    message:'Record Found',
+                    result
+                })
+            }
+        }
+        catch(e){
+            let result = await fetchData();
+            res.render('pages/search',{
+                type:'Error',
+                result,
+                message:"Invalid _id No Data Found"
+            })
+        }
     }
 })
 

@@ -74,28 +74,42 @@
                     <div class="col-12">
                         <table class="table text-center table-responsive-md border">
                             <thead class="thead-dark">
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">_id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">Phone</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
-                              </tr>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">_id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <% for(var i=0; i < result.length; i++) { %>
+                                <% if (result.length > 1) { %>
+                                    <% for(var i=0; i < result.length; i++) { %>
+                                        <tr>
+                                            <th scope="row"><%= i+1 %></th>
+                                            <td><%= result[i]._id %></td>
+                                            <td><%= result[i].Name %></td>
+                                            <td><%= result[i].Age %></td>
+                                            <td><%= result[i].Phone %></td>
+                                            <td><button class="w-100 text-light btn btn-warning" onclick="window.location.href='/admin/editdata?id=<%= result[i]._id %>' ">Edit</button></td>
+                                            <td><button class="w-100 btn btn-danger" onclick="window.location.href='/admin/deletedata?id=<%= result[i]._id %>' ">Delete</button></td>
+                                        </tr>
+                                    <% } %>
+
+                                    <%} else { %>
                                     <tr>
-                                        <th scope="row"><%= i+1 %></th>
-                                        <td><%= result[i]._id %></td>
-                                        <td><%= result[i].Name %></td>
-                                        <td><%= result[i].Age %></td>
-                                        <td><%= result[i].Phone %></td>
-                                        <td><button class="w-100 text-light btn btn-warning" onclick="window.location.href='/admin/editdata?id=<%= result[i]._id %>' ">Edit</button></td>
-                                        <td><button class="w-100 btn btn-danger" onclick="window.location.href='/admin/deletedata?id=<%= result[i]._id %>' ">Delete</button></td>
+                                        <th scope="row">1</th>
+                                        <td><%= result._id %></td>
+                                        <td><%= result.Name %></td>
+                                        <td><%= result.Age %></td>
+                                        <td><%= result.Phone %></td>
+                                        <td><button class="w-100 text-light btn btn-warning" onclick="window.location.href='/admin/editdata?id=<%= result._id %>' ">Edit</button></td>
+                                        <td><button class="w-100 btn btn-danger" onclick="window.location.href='/admin/deletedata?id=<%= result._id %>' ">Delete</button></td>
                                     </tr>
                                 <% } %>
+                                
                             </tbody>
                         </table>
                     </div>
